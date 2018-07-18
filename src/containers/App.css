@@ -1,0 +1,33 @@
+/* @import "./@material/button/mdc-button";
+
+.foo-button {
+  @include mdc-button-ink-color(teal);
+  @include mdc-states(teal);
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+} */
+
+.App {
+  text-align: center;
+  align-items: center;
+  width: 90%;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10pt;
+  font-style: inherit;
+}
+
+.tmdb-logo{
+  position: absolute;
+  height: 72.19px;
+  width: 64px;
+  top: 8px;
+  left: 16px;
+}
+
+.react-logo {
+  position: absolute;
+  height: 72.19px;
+  width: 64px;
+  top: 8px;
+  right: 16px;
+}
