@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Card from '@material-ui/core/Card';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import cyan from "@material-ui/core/colors/cyan";
 
 import AppBar from "../../components/AppBar/AppBar";
 import './SearchMovie.css';
@@ -19,16 +20,6 @@ class SearchMovie extends Component {
         this.apiUrl = 'https://api.themoviedb.org/3/search/movie?api_key=6fb03dacf22ba1a33f234622a7a2db' +
                 'cf&language=en-US&query=';
         this.imageUrl = 'https://image.tmdb.org/t/p/w500/';
-        this.styles = {
-            card: {
-                display: 'inline-block',
-                maxWidth: 345
-            },
-            media: {
-                height: 0,
-                paddingTop: '56.25%', // 16:9
-            }
-        };
     }
 
     componentDidMount = () => {
@@ -36,33 +27,58 @@ class SearchMovie extends Component {
             .get(this.movieRequest)
             .then(response => {
                 this.setState({results: response.data.results});
-        })
+            })
     }
 
     inputHandler = (event) => {
         this.inputQuery = event.target.value;
-        this.movieRequest = this.apiUrl + this.inputQuery; 
+        this.movieRequest = this.apiUrl + this.inputQuery;
         this.setState({movieRequest: this.inputQuery})
         this.componentDidMount();
     }
 
-    // getPoster = () => {
-    //     this.poster_path = this.state.results.map(results => results.poster_path);
-    //     this.imageRequest = this.imageUrl + this.poster_path;
-    //     this.setState({imageRequest: this.poster_path})
-    // }
+    getPoster = (event) => {
+        this.poster_path = event.target.value;
+        this.movieRequest = this.imageUrl + this.poster_path;
+        this.setState({imageUrl: this.poster_path})
+        this.componentDidMount();
+        axios
+            .get(this.imageUrl)
+            .then(response => {
+                this.setState({results: response.data.results});
+            })
+    }
 
     render() {
+        const card = {
+            display: 'inline-block',
+            margin: '20px',
+            position: 'relative',
+            maxWidth: 345,
+            maxHeight: 800
+        };
+
+        const media = {
+            paddingTop: '0%' // 16:9
+        };
+
+        const theme = createMuiTheme({
+            palette: {
+                primary: cyan
+            }
+        });
         return (
             <div>
-                <AppBar value={this.inputQuery} onChange={this.inputHandler}/> 
-                {this
+                <AppBar value={this.inputQuery} onChange={this.inputHandler}/> {this
                     .state
                     .results
                     .map(results => (
-                        <p>
-                        <Card style={this.state.styles}>
-                            <CardMedia style={this.state.styles} image={this.imageRequest}/>
+                        <Card style={card}>
+                            <img
+                                style={media}
+                                src={this.imageUrl + results.backdrop_path}
+                                onChange={this.getPoster}
+                                alt='Movie Poster'/>
                             <CardContent>
                                 <Typography gutterBottom variant="headline" component="h2">
                                     {results.title}
@@ -72,13 +88,13 @@ class SearchMovie extends Component {
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small" color="primary">
-                                    Learn More
-                                </Button>
+                                <MuiThemeProvider theme={theme}>
+                                    <Button size="small" color="primary">
+                                        Learn More
+                                    </Button>
+                                </MuiThemeProvider>
                             </CardActions>
                         </Card>
-                        <span />
-                        </p>
                     ))}
             </div>
         );
