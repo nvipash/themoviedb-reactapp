@@ -34,17 +34,15 @@ const theme = createMuiTheme({
     }
 });
 
-const ButtonAppBar = (props) => {
-    const {classes} = props;
-    return (
-        <div className={classes.root}>
+const ApplicationBar = ({classes, ...props}) => 
+    (<div className={classes.root}>
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
                     <IconButton className={classes.menuButton} color="black" aria-label="Menu">
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="title" align="justify" color="black" className={classes.flex}>
-                        The Movie Database API React app v0.1
+                        The Movie Database API React app
                     </Typography>
                     <MuiThemeProvider theme={theme}>
                     <TextField
@@ -65,12 +63,10 @@ const ButtonAppBar = (props) => {
                     </IconButton>
                 </Toolbar>
             </AppBar>
-        </div>
-    );
-}
+        </div>);
 
-ButtonAppBar.propTypes = {
+ApplicationBar.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ButtonAppBar);
+export default withStyles(styles)(ApplicationBar);
