@@ -33,14 +33,14 @@ export default class SearchMovie extends Component {
             })
     }
 
-    inputSearchHandler = (event) => {
+    onSearchInput = (event) => {
         this.inputQuery = event.target.value;
         this.movieRequest = this.apiUrl + this.inputQuery;
         this.setState({movieRequest: this.inputQuery})
         this.componentDidMount();
     }
 
-    getMoviePoster = (event) => {
+    onPosterLoad = (event) => {
         this.posterImage = event.target.value;
         this.movieRequest = this.imageUrl + this.posterImage;
         this.setState({imageUrl: this.posterImage})
@@ -52,11 +52,11 @@ export default class SearchMovie extends Component {
             })
     }
 
-    handleClickLearnMore = () => {
+    onClickLearnMore = () => {
         this.setState({open: true});
     };
 
-    componentDidMount = () => {
+    componentDidMount() {
         this.apiSearchRequest();
     }
 
@@ -77,7 +77,7 @@ export default class SearchMovie extends Component {
 
         return (
             <div>
-                <ApplicationBar value={this.inputQuery} onChange={this.inputSearchHandler}/> 
+                <ApplicationBar value={this.inputQuery} onChange={this.onSearchInput}/> 
                 {this
                     .state
                     .results
@@ -85,7 +85,7 @@ export default class SearchMovie extends Component {
                         <Card style={card}>
                             <img
                                 src={this.imageUrl + results.backdrop_path}
-                                onChange={this.getMoviePoster}
+                                onChange={this.onPosterLoad}
                                 alt='Movie Poster'/>
                             <CardContent>
                                 <Typography gutterBottom variant="headline" component="h2">
