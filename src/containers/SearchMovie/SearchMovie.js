@@ -9,8 +9,9 @@ import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import cyan from "@material-ui/core/colors/cyan";
 
-import classes from './SearchMovie.css';
-import MovieDialog from '../MovieDialog/MovieDialog';
+import './SearchMovie.css';
+import emptyImage from '../../images/empty_image.png'
+import MovieDialog from './../MovieDialog/MovieDialog';
 import ApplicationBar from './ApplicationBar/ApplicationBar';
 
 export default class SearchMovie extends Component {
@@ -22,34 +23,21 @@ export default class SearchMovie extends Component {
         };
         this.apiUrl = 'https://api.themoviedb.org/3/search/movie?api_key=6fb03dacf22ba1a33f234622a7a2db' +
                 'cf&language=en-US&query=';
-        this.imageUrl = 'https://image.tmdb.org/t/p/w500/';
     }
 
     apiSearchRequest = () => {
         axios
-            .get(this.movieRequest)
+            .get(this.apiUrlWithInput)
             .then(response => {
                 this.setState({results: response.data.results});
             })
     }
 
     onSearchInput = (event) => {
-        this.inputQuery = event.target.value;
-        this.movieRequest = this.apiUrl + this.inputQuery;
-        this.setState({movieRequest: this.inputQuery})
+        this.inputedMovie = event.target.value;
+        this.apiUrlWithInput = this.apiUrl + this.inputedMovie;
+        this.setState({apiUrlWithInput: this.inputedMovie})
         this.componentDidMount();
-    }
-
-    onPosterLoad = (event) => {
-        this.posterImage = event.target.value;
-        this.movieRequest = this.imageUrl + this.posterImage;
-        this.setState({imageUrl: this.posterImage})
-        this.componentDidMount();
-        axios
-            .get(this.imageUrl)
-            .then(response => {
-                this.setState({results: response.data.results});
-            })
     }
 
     onClickLearnMore = () => {
@@ -66,9 +54,9 @@ export default class SearchMovie extends Component {
             margin: '20px',
             position: 'relative',
             maxWidth: 345,
-            maxHeight: 800
+            maxHeight: 800,
+            maxLength: 300
         };
-
         const theme = createMuiTheme({
             palette: {
                 primary: cyan
@@ -77,22 +65,22 @@ export default class SearchMovie extends Component {
 
         return (
             <div>
-                <ApplicationBar value={this.inputQuery} onChange={this.onSearchInput}/> 
+                <ApplicationBar value={this.inputedMovie} onChange={this.onSearchInput}/> 
                 {this
                     .state
                     .results
                     .map(results => (
-                        <Card style={card}>
+                        <Card style={card}> 
+                            {results.backdrop_path != null ?
                             <img
-                                src={this.imageUrl + results.backdrop_path}
-                                onChange={this.onPosterLoad}
-                                alt='Movie Poster'/>
+                                src={`https://image.tmdb.org/t/p/w500${results.backdrop_path}`}
+                                alt='Movie Backdrop'/> : <img src={emptyImage} alt='Not available'/>}
                             <CardContent>
                                 <Typography gutterBottom variant="headline" component="h2">
                                     {results.title}
                                 </Typography>
                                 <Typography component="p">
-                                    <p className={classes.overview}>
+                                    <p>
                                         {results.overview}
                                     </p>
                                 </Typography>
@@ -100,15 +88,16 @@ export default class SearchMovie extends Component {
                             <CardActions>
                                 <MuiThemeProvider theme={theme}>
                                     <Link
-                                        to={`/${results.id}`}
+                                        to={`/movie/${results.id}`}
                                         style={{
                                         textDecoration: 'none'
                                     }}>
                                         <Button size="small" color="primary" onClick={this.handleClickOpen}>
                                             Learn More
                                             <Route
-                                                path={`/${results.id}`}
-                                                render={(props) => <MovieDialog {...props} movieId={results.id}/>}/>
+                                                path={`/movie/${results.id}`}
+                                                render={(props) => <MovieDialog {...props} 
+                                                movieId={results.id}/>}/>
                                         </Button>
                                     </Link>
                                 </MuiThemeProvider>

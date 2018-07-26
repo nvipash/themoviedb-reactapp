@@ -1,0 +1,8 @@
+.poster {
+    float: left; 
+    margin: 0px 10px 10px 0px;
+    max-width: 35%;
+    height: auto;
+    border-radius: 5px;
+    position: left;
+}

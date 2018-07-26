@@ -38,10 +38,10 @@ const ApplicationBar = ({classes, ...props}) =>
     (<div className={classes.root}>
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
-                    <IconButton className={classes.menuButton} color="black" aria-label="Menu">
+                    <IconButton className={classes.menuButton} aria-label="Menu">
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="title" align="justify" color="black" className={classes.flex}>
+                    <Typography variant="title" align="justify" className={classes.flex}>
                         The Movie Database API React app
                     </Typography>
                     <MuiThemeProvider theme={theme}>
@@ -58,8 +58,8 @@ const ApplicationBar = ({classes, ...props}) =>
                             </InputAdornment>}>
                     </TextField>
                     </MuiThemeProvider>
-                    <IconButton color="black" aria-label="Login">
-                    <AccountIcon />
+                    <IconButton aria-label="Login">
+                        <AccountIcon />
                     </IconButton>
                 </Toolbar>
             </AppBar>
