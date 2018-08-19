@@ -7,7 +7,9 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 
 import emptyImage from '../../images/empty_image.png'
@@ -57,9 +59,6 @@ class MovieDialog extends Component {
         }
         const {fullScreen} = this.props;
         const styles = {
-            title: {
-                background: '#B2FF59'
-            },
             arrowBack: {
                 position: 'left',
                 marginLeft: -12,
@@ -74,49 +73,55 @@ class MovieDialog extends Component {
                     open={this.state.open}
                     onClose={this.onCloseDialog}
                     aria-labelledby="responsive-dialog-title">
-                    <DialogTitle id="alert-dialog-slide-title" style={styles.title}>
-                        <IconButton onClick={this.onCloseDialog} style={styles.arrowBack} aria-label="Back">
-                            <ArrowBack/>
-                        </IconButton>
-                        <span/>
-                        <b>
-                            {this.state.title}
-                        </b>
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-slide-description">
-                        {this.state.poster_path != null ? <img
-                                className="poster"
-                                src={`https://image.tmdb.org/t/p/w500${this.state.poster_path}`}
-                                alt='Movie Poster'/> : <img className="poster" src={emptyImage} alt='Not available'/>}
-                            <p>
-                                <b>Genres: </b>
-                                {this
-                                    .state
-                                    .genres
-                                    .map(genres => genres.name)
-                                    .join(', ')}</p>
-                            <p>
-                                <b>Overview: </b>{this.state.overview}</p>
-                            <p>
-                                <b>Release data: </b>{this.state.release_date}</p>
-                            <p>
-                                <b>Status: </b>{this.state.status}</p>
-                            <p>
-                                <b>Average vote: </b>{this.state.vote_average}/10 ({this.state.vote_count} votes)</p>
-                            <p>
+                    <AppBar position="static" color="primary">
+                        <Toolbar>
+                            <IconButton
+                                onClick={this.onCloseDialog}
+                                style={styles.arrowBack}
+                                aria-label="Back">
+                                <ArrowBack/>
+                            </IconButton>
+                            <Typography variant="title" align="justify">
+                                {this.state.title}
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <DialogContentText component="div">
+                        <DialogContent>
+                            {this.state.poster_path != null
+                                ? <img
+                                        className="poster"
+                                        src={`https://image.tmdb.org/t/p/w500${this.state.poster_path}`}
+                                        alt='Movie Poster'/>
+                                : <img className="poster" src={emptyImage} alt='Not available'/>}
+                            <Typography variant="subheading" gutterBottom>
+                                <b>Genres: </b> 
+                                {this.state.genres.map(genres => genres.name).join(', ')}</Typography>
+                            <Typography variant="subheading" gutterBottom>
+                                <b>Overview: </b>
+                                {this.state.overview}</Typography>
+                            <Typography variant="subheading" gutterBottom>
+                                <b>Release data: </b>
+                                {this.state.release_date}</Typography>
+                            <Typography variant="subheading" gutterBottom>
+                                <b>Status: </b>
+                                {this.state.status}</Typography>
+                            <Typography variant="subheading" gutterBottom>
+                                <b>Average vote: </b>
+                                {this.state.vote_average}/10 ({this.state.vote_count} votes)</Typography>
+                            <Typography variant="subheading" gutterBottom>
                                 <b>Production companies: </b>
-                                {this
-                                    .state
-                                    .production_companies
+                                {this.state.production_companies
                                     .map(production_companies => production_companies.name)
-                                    .join(', ')}</p>
-                            <p> 
-                                <b>Runtime: </b>{this.state.runtime} minutes</p>
-                            <p> 
-                                <b>Budget: </b>${this.state.budget}</p>
-                        </DialogContentText>
-                    </DialogContent>
+                                    .join(', ')}</Typography>
+                            <Typography variant="subheading" gutterBottom>
+                                <b>Runtime: </b>
+                                {this.state.runtime} minutes</Typography>
+                            <Typography variant="subheading" gutterBottom>
+                                <b>Budget: </b>
+                                {this.state.budget === 0 ? "-" : `$${this.state.budget}`}</Typography>
+                        </DialogContent>
+                    </DialogContentText>
                 </Dialog>
             </div>
         );
