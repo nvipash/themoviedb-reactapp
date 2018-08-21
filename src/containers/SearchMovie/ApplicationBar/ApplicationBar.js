@@ -1,5 +1,4 @@
 import React from 'react';
-import {Route, Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -10,12 +9,10 @@ import TextField from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountIcon from '@material-ui/icons/AccountCircle';
-import Tooltip from '@material-ui/core/Tooltip';
 import purple from '@material-ui/core/colors/purple';
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
-import AuthDialog from '../../AuthDialog/AuthDialog';
+import LogicIconButton from '../../../components/LoginIconButton/LoginIconButton'
 
 const styles = {
     flex: {
@@ -59,12 +56,7 @@ const ApplicationBar = ({classes, ...props}) => (
                             </InputAdornment>}>
                         </TextField>
                 </MuiThemeProvider>
-                <Tooltip disableFocusListener disableTouchListener title="Login with Firebase SDK">
-                    <IconButton component={Link} to={`/login`} aria-label="Login">
-                        <Route path={'/login'} exact component={AuthDialog}/>
-                    <AccountIcon/>
-                    </IconButton>
-                </Tooltip>
+                <LogicIconButton />
             </Toolbar>
         </AppBar>
     </div>

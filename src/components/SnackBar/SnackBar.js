@@ -9,7 +9,7 @@ export default function SnackBar(props) {
         anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
         onClose={props.onClose}
         open={props.open}
-        autoHideDuration={2000}
+        autoHideDuration={3000}
         ContentProps={{'aria-describedby': 'message-id'}}
-        message={<span id = "message-id"> {props.text} </span>}/>)
+        message={<span id = "message-id"> {props.message} </span>}/>)
 }

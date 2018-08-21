@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import {Redirect} from 'react-router';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import ReactDOM from 'react-dom';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import purple from '@material-ui/core/colors/purple';
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
-import SnackBar from '../../components/SnackBar/SnackBar'
-import {auth} from '../../features/Authentication/firebase'
+import {auth} from '../../features/Authentication/firebase';
+import SnackBar from '../../components/SnackBar/SnackBar';
 
 const theme = createMuiTheme({
     palette: {
@@ -42,33 +42,46 @@ export default class AuthDialog extends Component {
 
     onClickSignIn = () => {
         const promise = auth.signInWithEmailAndPassword(this.state.email, this.state.password);
-        promise.catch(error => console.log(error.message));
+        promise.catch(error => {
+            this.setState(prevState => ({openSnackBar: !prevState.openSnackBar}));
+            const snackBarSentToEmail = <SnackBar
+                open={this.state.openSnackBar}
+                message={error.message}/>;
+            ReactDOM.render(snackBarSentToEmail, document.getElementById('snack-bar'));
+        });
         // this.setState({open: false, redirect: true});
     }
 
     onClickSignUp = () => {
-        const promise = auth.createUserWithEmailAndPassword(this.state.email, this.state.password);
-        promise.catch(error => console.log(error.message));
-    }
-
-    onCLickSignOut = () => {
-        auth.signOut();
-        this.setState(prevState => ({openSnackBar: !prevState.openSnackBar}));
-        // this.setState({open: false, redirect: true});
-    }
-
-    realtimeAuthChecker = () => {
-        auth.onAuthStateChanged(firebaseUser => {
-            if (firebaseUser) {
-                console.log(firebaseUser);
-            } else {
-                console.log("User not logged in")
+        const promise = auth.createUserWithEmailAndPassword(this.state.email, this.state.password).then();
+        promise.catch(error => {
+            this.setState(prevState => ({openSnackBar: !prevState.openSnackBar}));
+            const snackBarSentToEmail = <SnackBar
+                onClose={this.onClickSignUp}
+                open={this.state.openSnackBar}
+                message={error.message}/>;
+            ReactDOM.render(snackBarSentToEmail, document.getElementById('snack-bar'));
+        });
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                user.sendEmailVerification().then(() => {
+                        this.setState(prevState => ({openSnackBar: !prevState.openSnackBar}));
+                        const snackBarSentToEmail = <SnackBar
+                            onClose={this.onClickSignUp}
+                            open={this.state.openSnackBar}
+                            message={`Verification email sent to ${user.email}`}/>;
+                        ReactDOM.render(snackBarSentToEmail, document.getElementById('snack-bar'));
+                    })
+                    .catch(error => {
+                        this.setState(prevState => ({openSnackBar: !prevState.openSnackBar}));
+                        const snackBarError = <SnackBar
+                            onClose={this.onClickSignUp}
+                            open={this.state.openSnackBar}
+                            message={error.message}/>;
+                        ReactDOM.render(snackBarError, document.getElementById('snack-bar'));
+                    })
             }
         })
-    };
-
-    componentWillMount() {
-        this.realtimeAuthChecker();
     }
 
     render() {
@@ -77,13 +90,12 @@ export default class AuthDialog extends Component {
         }
 
         return (
-            <div id='root'>
+            <div>
                 <Dialog
                     id="auth"
                     open={this.state.openAuthDialog}
                     onClose={this.onClickCancel}
                     aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Login</DialogTitle>
                     <DialogContent>
                         <MuiThemeProvider theme={theme}>
                             <TextField
@@ -104,21 +116,18 @@ export default class AuthDialog extends Component {
                         </MuiThemeProvider>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.onCLickSignOut} color="secondary">
-                            Sign Out
-                        </Button>
-                        <Button onClick={this.onClickCancel} color="secondary">
+                        <Button variant="outlined" onClick={this.onClickCancel} color="default">
                             Cancel
                         </Button>
-                        <Button onClick={this.onClickSignIn} color="secondary">
-                            Log in
-                        </Button>
-                        <Button onClick={this.onClickSignUp} color="secondary">
+                        <Button variant="outlined" onClick={this.onClickSignUp} color="default">
                             Sign Up
+                        </Button>
+                        <Button variant="contained" onClick={this.onClickSignIn} color="secondary">
+                            Sign in
                         </Button>
                     </DialogActions>
                 </Dialog>
-                <SnackBar onClose={this.onClickSignOut} open={this.state.openSnackBar} text={"You're signed out"}/>
+                <div id='snack-bar'/>
             </div>
         );
     }

@@ -35,9 +35,9 @@ export default class SearchMovie extends Component {
     render() {
         const card = {
             display: 'inline-block',
-            margin: '20px',
+            margin: '10px 10px',
             position: 'relative',
-            maxWidth: 345,
+            maxWidth: 325,
             maxHeight: 800,
             maxLength: 300
         };
