@@ -1,18 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Search from '@material-ui/icons/Search';
-import TextField from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import {Link, Route} from 'react-router-dom';
+import {Search, Menu} from '@material-ui/icons/';
 import purple from '@material-ui/core/colors/purple';
-import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import {AppBar, Toolbar, Input, InputAdornment, IconButton} from '@material-ui/core/';
+import {withStyles, createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
 import LogicIconButton from '../../../components/LoginIconButton/LoginIconButton'
+import Drawer from '../../../components/Drawer/Drawer'
 
 const styles = {
     flex: {
@@ -20,7 +15,7 @@ const styles = {
     },
     menuButton: {
         marginLeft: -12,
-        marginRight: 20
+        marginRight: 5
     }
 };
 
@@ -36,14 +31,11 @@ const ApplicationBar = ({classes, ...props}) => (
     <div className={classes.flex}>
         <AppBar color="primary" position="fixed">
             <Toolbar>
-                <IconButton className={classes.menuButton} aria-label="Menu">
-                    <MenuIcon/>
+                <IconButton component={Link} to={`/drawer`} aria-label="Drawer" className={classes.menuButton}>
+                    <Route path={'/drawer'} exact component={Drawer}/><Menu/>
                 </IconButton>
-                <Typography variant="title" align="justify" className={classes.flex}>
-                    The Movie Database API React app
-                </Typography>
                 <MuiThemeProvider theme={theme}>
-                    <TextField
+                    <Input
                         className="movie-input"
                         placeholder="Search movie to watch"
                         value={props.value}
@@ -54,7 +46,7 @@ const ApplicationBar = ({classes, ...props}) => (
                             <InputAdornment position="start"> 
                                 <Search/> 
                             </InputAdornment>}>
-                        </TextField>
+                        </Input>
                 </MuiThemeProvider>
                 <LogicIconButton />
             </Toolbar>

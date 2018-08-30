@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
 import {Redirect} from 'react-router';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import ReactDOM from 'react-dom';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
 import purple from '@material-ui/core/colors/purple';
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import {Button, TextField, Dialog, DialogActions, DialogContent} from '@material-ui/core/';
 
 import {auth} from '../../features/Authentication/firebase';
 import SnackBar from '../../components/SnackBar/SnackBar';
@@ -117,7 +113,7 @@ export default class AuthDialog extends Component {
                     </DialogContent>
                     <DialogActions>
                         <Button variant="outlined" onClick={this.onClickCancel} color="default">
-                            Cancel
+                            Close
                         </Button>
                         <Button variant="outlined" onClick={this.onClickSignUp} color="default">
                             Sign Up

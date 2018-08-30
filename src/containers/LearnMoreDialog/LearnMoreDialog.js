@@ -1,21 +1,14 @@
 import React, {Component} from 'react';
 import {Redirect} from 'react-router';
 import axios from 'axios';
-import IconButton from '@material-ui/core/IconButton';
-import ArrowBack from '@material-ui/icons/ArrowBack';
 import PropTypes from 'prop-types';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogContent from '@material-ui/core/DialogContent';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import {IconButton, Dialog, DialogContentText, DialogContent, AppBar, Toolbar, Typography, withMobileDialog} from '@material-ui/core/';
 
 import emptyImage from '../../images/empty_image.png'
-import "./MovieDialog.css"
+import "./LearnMoreDialog.css"
 
-class MovieDialog extends Component {
+class LearnMoreDialog extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -128,8 +121,8 @@ class MovieDialog extends Component {
     }
 }
 
-MovieDialog.propTypes = {
+LearnMoreDialog.propTypes = {
     fullScreen: PropTypes.bool.isRequired
 };
 
-export default withMobileDialog()(MovieDialog);
+export default withMobileDialog()(LearnMoreDialog);

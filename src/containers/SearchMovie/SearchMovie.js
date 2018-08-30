@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
 import {Route, Link} from 'react-router-dom';
 import axios from 'axios';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import {Card, CardActions, CardContent, Typography, Button} from '@material-ui/core/';
 
 import emptyImage from '../../images/empty_image.png'
-import MovieDialog from './../MovieDialog/MovieDialog';
+import LearnMoreDialog from './../LearnMoreDialog/LearnMoreDialog';
 import ApplicationBar from './ApplicationBar/ApplicationBar';
 import './SearchMovie.css';
 
@@ -38,15 +34,14 @@ export default class SearchMovie extends Component {
             margin: '10px 10px',
             position: 'relative',
             maxWidth: 325,
-            maxHeight: 800,
+            maxHeight: 1000,
             maxLength: 300
         };
 
         return (
             <div>
                 <ApplicationBar value={this.state.enteredMovie} onChange={this.onSearchEnteredMovie}/> 
-                {this.state.results
-                    .map((results) => (
+                {this.state.results.map((results) => (
                         <Card style={card} key={results.id}>
                             {results.backdrop_path != null
                                 ? <img src={`https://image.tmdb.org/t/p/w500${results.backdrop_path}`}
@@ -65,7 +60,7 @@ export default class SearchMovie extends Component {
                                     Learn More
                                     <Route
                                         path={`/movie/${results.id}`}
-                                        render={(props) => <MovieDialog {...props} movieId={results.id}/>}/>
+                                        render={(props) => <LearnMoreDialog {...props} movieId={results.id}/>}/>
                                 </Button>
                             </CardActions>
                         </Card>
